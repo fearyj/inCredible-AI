@@ -1,1 +1,49 @@
+PROBLEM STATEMENT:
+Design a platform or app with AI to counter the proliferation of online falsehoods. Possible areas include, but are not limited to:
+1. LLMs for Online Misinformation
+2. Image/Video Deepfake Detection
+3. Automated Fact-Checking
+4. Explainable Fact-Checking
 
+Judging Criteria:
+40% Technical Difficulty (Knowledge of Software Functions, In-depth Research)
+30% Industrial Value (Community Impact, Feasibility)
+20% Innovation (Improve gaps in existing measures, Different from existing solutions)
+10% Design Aesthetics (UI & Demo Video is creative & aesthetically pleasing)
+
+Key: Novelty
+
+Draft Ideas:
+- S3 to store user feedback on the output we generated, then use the feedback to inform other user of users feedback. (User can agree or disagree and maybe give comments)
+- Hugging face got inference api for text misinformation detection (Try to pair with what grok does which is learn from X)
+- Deepfake can try deepware scanner (still beta V1) api, 
+- Fact check can use wikipedia api and claimreview data (Use llm to reason over result)
+- Generate guide on how to identify fake information
+- Feed user with correct information
+- Detect how many percent is fake
+- Get credibility score of the output
+- Display list of souces and their credibility score
+- Filter and summarise from sources that have credibility score of 80% above, take top 3 website and summarise into a complete information
+- For deepfake, summary of why it is fake must be generated
+- See whether we can use reasoning models like deepseek
+- Use AI to produce image of what an actual image should look like
+- Multi layer verification (2fa for facts)
+- Use reasoning to produce a likelyhood of how much something would happen
+- Peng Yee suggest create something for users to upload evidence regarding misinformation of themselves to clear their name
+- Simple UI, monotone (Black, Gray, White) or kanban detection style (if have time)
+
+
+-Simple page with few different tab with different function: 
+1) First page is user prompt the AI, like LLM to fact check something
+2) Second page is deepfake, User upload an image
+3) News page screenshot, user provide screenshot of a news page or a post, then the AI will return with fact check and also return a 4-part story illustration of what are the motives of the misinformation
+
+
+Tech Stack:
+Frontend: React
+Backend: Flask
+Storage: AWS S3
+Host: AWS EC2
+AIs: Deepware for deepfake, Hugging face APi for text misinformation, see how to implement take social media texts like Grok, Gemini, need find text to image llm, replicate ai
+
+SQLAlchemy to store userfeedback, wikipediaapi
