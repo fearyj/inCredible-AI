@@ -32,11 +32,62 @@ Draft Ideas:
 - Peng Yee suggest create something for users to upload evidence regarding misinformation of themselves to clear their name
 - Simple UI, monotone (Black, Gray, White) or kanban detection style (if have time)
 
+Meeting:
+1) Reuters to fact check
+2) Google fact checker Tools
+3) 
+
+Flow 1 Page 1:
+1) User upload screenshot
+2) AI verify context of screenshot
+3) User agree or disagree (If disagree prompt user to write the context)
+4) AI back end Do do do
+5) Provide user with 
+  a) % of it being fake
+  b) Related source with % of credibility
+  c) Reasoning
+  d) Provide storyboard if it is a news (to show illustration motive of the misinformer)
+  e) How to learn signs of related misinformation
+
+Flow 2 Page 1:
+1) User input text
+2) AI back end Do do do
+3) Provide user with 
+  a) % of it being fake
+  b) Related source with % of credibility
+  c) Reasoning
+  d) Provide storyboard if it is a news (to show illustration motive of the misinformer)
+  e) How to learn signs of related misinformation
+
+Flow 1 Page 2:
+1) User upload image or video or video url
+2) Use Deepware to scan for deepfake
+3) Procedure reasoning on how as user we can detect deepfake (If possible), percentage of it being fake
+4) Find original photo if possible (Rachel API)
+
+
+
+
+Pages:
+1) Fact check for text and also screenshots
+
+a) If news only produce storyboard
+b) If no news no storyboard
+2) Verify deepfake images/videos
+
+Search for api to find origin photo of deepfaked photo (Search for api)
+
+
 
 -Simple page with few different tab with different function: 
 1) First page is user prompt the AI, like LLM to fact check something
 2) Second page is deepfake, User upload an image
 3) News page screenshot, user provide screenshot of a news page or a post, then the AI will return with fact check and also return a 4-part story illustration of what are the motives of the misinformation
+
+Meeting:
+1) Reuter to fact check 
+2) Google 
+
 
 
 Tech Stack:
@@ -47,3 +98,10 @@ Host: AWS EC2
 AIs: Deepware for deepfake, Hugging face APi for text misinformation, see how to implement take social media texts like Grok, Gemini, need find text to image llm, replicate ai
 
 SQLAlchemy to store userfeedback, wikipediaapi
+
+Peng Yee & Rachel : Design frontend (Main, Page 1, Page 2)
+Ken & Jing Huan: Backend 
+Ken go figure out how the backedn should work
+Jing Huan go figure out  Amazon how to host
+
+
