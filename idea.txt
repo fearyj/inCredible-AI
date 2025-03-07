@@ -35,7 +35,11 @@ Draft Ideas:
 Meeting:
 1) Reuters to fact check
 2) Google fact checker Tools
-3) 
+
+
+Home page:
+1) UI Include some of the top 5 misinformation of the previous day
+2) Click left or right for Page 1 or page 2
 
 Flow 1 Page 1:
 1) User upload screenshot
@@ -61,9 +65,8 @@ Flow 2 Page 1:
 
 Flow 1 Page 2:
 1) User upload image or video or video url
-2) Use Deepware to scan for deepfake
-3) Procedure reasoning on how as user we can detect deepfake (If possible), percentage of it being fake
-4) Find original photo if possible (Rachel API)
+2) Use Deepware to scan for deepfake (Produce a Real or Fake)
+3) Auto creates a sharable image regarding the fake object and make it such that it is shareable in one click
 
 
 
