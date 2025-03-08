@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from '../components/Button.jsx';
 
-const About = ({ onDetectClick }) => { // Accept onDetectClick as a prop
+const About = ({ onDetectClick, onFactClick }) => { // Accept onDetectClick as a prop
   const [hasCopied, setHasCopied] = useState(false);
 
   const handleCopy = () => {
@@ -13,10 +13,10 @@ const About = ({ onDetectClick }) => { // Accept onDetectClick as a prop
     }, 2000);
   };
 
-  // Navigate to inFact page (keep this as is for now)
-  const goToFact = () => {
-    window.location.href = '/inFact'; // This can be updated later
-  };
+  // // Navigate to inFact page (keep this as is for now)
+  // const goToFact = () => {
+  //   window.location.href = '/inFact'; // This can be updated later
+  // };
 
   return (
     <section className="c-space my-20" id="about">
@@ -36,7 +36,7 @@ const About = ({ onDetectClick }) => { // Accept onDetectClick as a prop
           </div>
         </div>
 
-        {/* Second container - inFact */}
+        {/* Second container - ~ */}
         <div className="grid-container">
           <img src="assets/grid4.png" alt="contact" className="w-full h-[276px] object-cover object-top" />
           <div className="space-y-4">
@@ -45,7 +45,7 @@ const About = ({ onDetectClick }) => { // Accept onDetectClick as a prop
               <img src="assets/copy.svg" alt="copy" />
               <p className="lg:text-2xl md:text-xl font-medium text-gray_gradient text-white">Fact Checking Tool</p>
             </div>
-            <div onClick={goToFact} className="cursor-pointer">
+            <div onClick={onFactClick} className="cursor-pointer">
               <Button name="Check now" isBeam containerClass="w-full mt-6" />
             </div>
           </div>
