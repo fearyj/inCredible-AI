@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Button from '../components/Button.jsx';
+import axios from "axios";
 
 const InDetect = ({ onBack }) => {
   const [url, setUrl] = useState('');
@@ -90,40 +91,39 @@ const InDetect = ({ onBack }) => {
   };
 
   const handleAnalyze = async () => {
-    setError(null);
-
-    if (!file && !url) {
-      setError('Please provide a file or a YouTube URL.');
-      return;
-    }
-    if (url && !isValidYouTubeUrl(url)) {
-      setError('Invalid URL. Only YouTube URLs are allowed (e.g., https://www.youtube.com/watch?v=xyz).');
-      return;
-    }
-
-    console.log('Analyze started, file:', file ? file.name : 'none', 'url:', url);
-
+    console.log("Analyze button clicked"); // Log when the button is clicked
+    if (!file && !url) return;
+  
+    setIsLoading(true);
+  
     try {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-      const mockResult = {
-        type: file ? 'file' : 'url',
-        name: file ? file.name : url,
-        confidence: Math.floor(Math.random() * 100) + '%',
-        classification: Math.random() > 0.5 ? 'AI Generated' : 'Authentic',
-        details: [
-          { label: 'Manipulation Score', value: Math.floor(Math.random() * 100) + '%' },
-          { label: 'Consistency Score', value: Math.floor(Math.random() * 100) + '%' },
-          { label: 'Noise Pattern', value: Math.random() > 0.5 ? 'Suspicious' : 'Normal' },
-        ],
-      };
-      setResult(mockResult);
+      let formData = new FormData(); // Create a FormData object
+  
+      if (file) {
+        formData.append("file", file); // Attach the file
+        console.log("File added to formData:", file.name); // Log the file added to formData
+        
+      } else {
+        formData.append("url", url); // Attach the URL
+      }
+
+      console.log("formData contents:", formData);
+  
+      console.log("Sending data:", file ? file.name : url); // Debugging in browser console
+  
+      const response = await axios.post("http://127.0.0.1:5000/analyze", formData);
+  
+      console.log("Received response from Flask:", response.data); // Debugging
+  
+      setResult(response.data); // Store result
     } catch (error) {
-      console.error('Simulated analysis error:', error);
-      setError('Failed to analyze content. Please try again.');
-      setResult(null);
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
-
+  
+  console.log("Button disabled state:", isLoading || (!file && !url));
   return (
     <section className="c-space my-10 pt-20">
       <div className="grid-container max-w-4xl mx-auto">
