@@ -95,7 +95,7 @@ const InDetect = ({ onBack }) => {
         formData.append("url", url);
       }
 
-      const response = await axios.post("http://127.0.0.1:5000/analyze", formData, {
+      const response = await axios.post("http://127.0.0.1:5001/api/analyze", formData, { // add slash api because routing WORKS THIS WAY
         headers: { "Content-Type": "multipart/form-data" }
       });
       console.log("Received response from Flask:", response.data);

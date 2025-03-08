@@ -56,7 +56,7 @@ def arya_api(file_path):
     url = "https://ping.arya.ai/api/v1/deepfake-detection/image"
     payload = {"doc_base64": file_base64, "req_id": req_id_string, "isIOS": False, "doc_type": doc_type_string, "orientation":  orient_int,  }
     headers = {
-      'token': 'ca23ac9da1666693a725e0bf1b83a11c',
+      'token': '9b75f9cafa676b95a824b6e51cd1aa16',
       'content-type':'application/json' #sending payload in json format
     }
     response = requests.request("POST", url, json=payload, headers=headers)
