@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share on {{ platform|capitalize }}</title>
+</head>
+<body>
+
+    <script>
+        window.onload = function() {
+            const imageUrl = "{{ data.image_url }}";
+            const text = "{{ data.text }}";
+            let shareUrl = "";
+
+            if ("{{ platform }}" === "telegram") {
+                shareUrl = `https://t.me/share/url?url=${encodeURIComponent(imageUrl)}&text=${encodeURIComponent(text)}`;
+            } else if ("{{ platform }}" === "whatsapp") {
+                shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + imageUrl)}`;
+            }
+
+            if (shareUrl) {
+                window.open(shareUrl, '_blank', 'width=550,height=450');
+                 // Redirect the user back to the home page after a short delay (to allow sharing to happen)
+                 setTimeout(function() {
+                    window.location.href = "/";
+                }, 3000);  // Redirect after 3 seconds
+            }
+        }
+    </script>
+</body>
+</html>
