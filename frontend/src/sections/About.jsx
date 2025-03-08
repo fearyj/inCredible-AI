@@ -13,12 +13,17 @@ const About = ({ onDetectClick, onFactClick }) => { // Accept onDetectClick as a
     }, 2000);
   };
 
+  // // Navigate to inFact page (keep this as is for now)
+  // const goToFact = () => {
+  //   window.location.href = '/inFact'; // This can be updated later
+  // };
+
   return (
     <section className="c-space my-20" id="about">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 h-full">
         {/* First container - inDetect */}
         <div className="grid-container">
-          <img src="assets/fake.png" alt="contact" className="w-full h-64 object-contain" />
+          <img src="assets/grid4.png" alt="contact" className="w-full h-[276px] object-cover object-top" />
           <div className="space-y-4">
             <p className="grid-subtext text-center">inDetect</p>
             <div className="copy-container" onClick={handleCopy}>
@@ -33,7 +38,7 @@ const About = ({ onDetectClick, onFactClick }) => { // Accept onDetectClick as a
 
         {/* Second container - ~ */}
         <div className="grid-container">
-          <img src="assets/question_mark.png" alt="contact" className="w-full h-64 object-contain" />
+          <img src="assets/grid4.png" alt="contact" className="w-full h-[276px] object-cover object-top" />
           <div className="space-y-4">
             <p className="grid-subtext text-center">inFact</p>
             <div className="copy-container">
