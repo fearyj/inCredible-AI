@@ -1,19 +1,35 @@
-// src/sections/InDetect.jsx
-import { useState, useRef, useCallback, useEffect } from 'react'; // Added useEffect
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Button from '../components/Button.jsx';
-import Loading from '../components/Loading.jsx';
 
 const InDetect = ({ onBack }) => {
   const [url, setUrl] = useState('');
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
+    let objectUrl;
+    if (file) {
+      objectUrl = URL.createObjectURL(file);
+    }
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+        console.log('Revoked ObjectURL for:', file ? file.name : 'null');
+      }
+    };
+  }, [file]);
+
+  useEffect(() => {
     console.log('Render triggered, file:', file ? file.name : null, 'url:', url);
-  }); // Log render to debug
+  }, [file, url]);
+
+  const isValidYouTubeUrl = (url) => {
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^&=%\?]{11})/;
+    return youtubeRegex.test(url);
+  };
 
   const handleDrag = useCallback((e) => {
     e.preventDefault();
@@ -29,24 +45,18 @@ const InDetect = ({ onBack }) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
-    console.log('Drop event triggered, URL:', url);
     if (!url && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const droppedFile = e.dataTransfer.files[0];
-      if (droppedFile.type.match('image/*') || droppedFile.type.match('video/*')) {
-        console.log('Setting file:', droppedFile.name);
+      if (droppedFile.type.match('image/') || droppedFile.type.match('video/')) {
         setFile(droppedFile);
         setUrl('');
       }
-    } else if (url) {
-      console.log('Drop ignored due to URL presence');
     }
   }, [url]);
 
   const handleFileSelect = (e) => {
-    console.log('File select event triggered, URL:', url);
     if (!url && e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
-      console.log('Setting file:', selectedFile.name);
       setFile(selectedFile);
       setUrl('');
     }
@@ -55,30 +65,46 @@ const InDetect = ({ onBack }) => {
   const handleUrlChange = (e) => {
     const newUrl = e.target.value;
     setUrl(newUrl);
-    if (newUrl) setFile(null);
-    console.log('URL changed to:', newUrl, 'File cleared:', !newUrl);
+    if (newUrl) {
+      setFile(null);
+      if (!isValidYouTubeUrl(newUrl)) {
+        setError('Please enter a valid YouTube URL (e.g., https://www.youtube.com/watch?v=xyz).');
+      } else {
+        setError(null);
+      }
+    } else {
+      setError(null);
+    }
   };
 
   const handleBrowseClick = () => {
-    if (!url) {
+    if (!url && fileInputRef.current) {
+      fileInputRef.current.value = '';
       fileInputRef.current.click();
     }
   };
 
   const handleClearFile = () => {
     setFile(null);
-    console.log('File cleared');
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleAnalyze = async () => {
-    if (!file && !url) return;
-    console.log('Analyze clicked, setting isAnalyzing to true');
-    setIsAnalyzing(true);
-  };
+    setError(null);
 
-  const handleAnalysisComplete = () => {
-    console.log('Analysis complete, setting isAnalyzing to false');
+    if (!file && !url) {
+      setError('Please provide a file or a YouTube URL.');
+      return;
+    }
+    if (url && !isValidYouTubeUrl(url)) {
+      setError('Invalid URL. Only YouTube URLs are allowed (e.g., https://www.youtube.com/watch?v=xyz).');
+      return;
+    }
+
+    console.log('Analyze started, file:', file ? file.name : 'none', 'url:', url);
+
     try {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       const mockResult = {
         type: file ? 'file' : 'url',
         name: file ? file.name : url,
@@ -92,25 +118,18 @@ const InDetect = ({ onBack }) => {
       };
       setResult(mockResult);
     } catch (error) {
-      console.error('Analysis failed:', error);
-    } finally {
-      setIsAnalyzing(false);
+      console.error('Simulated analysis error:', error);
+      setError('Failed to analyze content. Please try again.');
+      setResult(null);
     }
   };
 
   return (
-    <section className="c-space my-10">
-      {isAnalyzing && <Loading onLoadingComplete={handleAnalysisComplete} />}
+    <section className="c-space my-10 pt-20">
       <div className="grid-container max-w-4xl mx-auto">
-        <div className="mb-6">
-          <button onClick={onBack} className="text-blue-500 underline hover:text-blue-700">
-            Back to Main
-          </button>
-        </div>
-
         <h1 className="grid-headtext text-center mb-6">inDetect - Media Analysis Tool</h1>
         <p className="grid-subtext text-center mb-8">
-          Analyze images and videos to detect AI-generated content
+          Analyze images, videos, or YouTube URLs to detect AI-generated content
         </p>
 
         <div
@@ -126,16 +145,13 @@ const InDetect = ({ onBack }) => {
             type="file"
             ref={fileInputRef}
             onChange={handleFileSelect}
-            accept="image/*,video/*"
+            accept="image/,video/"
             className="hidden"
             disabled={!!url}
-            key={url} // Force re-render when URL changes
           />
           {file ? (
             <div className="space-y-4">
-              <div className="flex items-center justify-center">
-                <span className="text-lg font-medium text-green-600">File selected:</span>
-              </div>
+              <span className="text-lg font-medium text-green-600">File selected:</span>
               <div className="bg-white p-3 rounded-lg shadow-sm inline-block">
                 {file.type.startsWith('image/') ? (
                   <img src={URL.createObjectURL(file)} alt="Preview" className="max-h-48 mx-auto rounded" />
@@ -162,7 +178,7 @@ const InDetect = ({ onBack }) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <p className="text-lg">Drag and drop your image or video here</p>
+              <p className="text-lg text-white">Drag and drop your image or video here</p> {/* Changed to text-white */}
               <p className="text-sm text-gray-500">Supports: JPG, PNG, GIF, MP4, MOV</p>
               <button
                 onClick={handleBrowseClick}
@@ -173,21 +189,18 @@ const InDetect = ({ onBack }) => {
               >
                 Browse Files
               </button>
-              {url && (
-                <p className="text-sm text-red-500 mt-2">
-                  Note: URL is entered. Drag-and-drop and Browse Files are disabled until the URL is cleared.
-                </p>
-              )}
             </div>
           )}
         </div>
 
         <div className="mb-6">
-          <p className="mb-2 font-medium">OR enter a URL:</p>
+          <p className="mb-2 font-medium">OR enter a YouTube URL:</p>
           <input
             type="text"
-            placeholder="https://example.com/image.jpg"
-            className={`w-full p-3 border rounded-lg ${file ? 'bg-gray-100 text-gray-500' : 'bg-white'}`}
+            placeholder="https://www.youtube.com/watch?v=xyz"
+            className={`w-full p-3 border rounded-lg ${
+              file ? 'bg-gray-100 text-gray-500' : 'bg-white'
+            } ${error && url ? 'border-red-500' : 'border-gray-300'}`}
             value={url}
             onChange={handleUrlChange}
             disabled={!!file}
@@ -195,17 +208,22 @@ const InDetect = ({ onBack }) => {
           {file && (
             <p className="text-sm text-gray-500 mt-1">Clear the file selection above to enter a URL</p>
           )}
+          {error && url && (
+            <p className="text-sm text-red-500 mt-1">{error}</p>
+          )}
         </div>
 
+        {error && !url && <p className="text-red-500 text-center mb-4">{error}</p>}
+
         <Button
-          name={isAnalyzing ? 'Analyzing...' : 'Analyze Content'}
-          isBeam={!isAnalyzing}
+          name={'Analyze Content'}
+          isBeam={true}
           containerClass="w-full mb-8"
           onClick={handleAnalyze}
-          disabled={isAnalyzing || (!file && !url)}
+          disabled={(!file && !url) || (url && !isValidYouTubeUrl(url))}
         />
 
-        {result && !isAnalyzing && (
+        {result && (
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-4 text-center">Analysis Results</h2>
             <div className="mb-6">
