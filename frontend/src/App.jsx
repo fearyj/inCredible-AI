@@ -69,7 +69,7 @@ const App = () => {
             onFactClick={handleShowInFact}
           /> {/* Pass the handler to About */}
           <Projects />
-          <Clients />
+          {/* <Clients /> */}
           <WorkExperience />
           <Contact />
         </>
