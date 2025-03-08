@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import Button from '../components/Button.jsx';
+import Button from '../components/Button.jsx';  // Assumes you have a Button component
 import axios from "axios";
 
 const InDetect = ({ onBack }) => {
@@ -8,20 +8,8 @@ const InDetect = ({ onBack }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    let objectUrl;
-    if (file) {
-      objectUrl = URL.createObjectURL(file);
-    }
-    return () => {
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-        console.log('Revoked ObjectURL for:', file ? file.name : 'null');
-      }
-    };
-  }, [file]);
 
   useEffect(() => {
     console.log('Render triggered, file:', file ? file.name : null, 'url:', url);
@@ -91,39 +79,35 @@ const InDetect = ({ onBack }) => {
   };
 
   const handleAnalyze = async () => {
-    console.log("Analyze button clicked"); // Log when the button is clicked
+    console.log('handleAnalyze called, file:', file ? file.name : 'none', 'url:', url); // Test log
     if (!file && !url) return;
-  
+
     setIsLoading(true);
-  
+    setError(null);
+    setResult(null);
+
     try {
-      let formData = new FormData(); // Create a FormData object
-  
+      const formData = new FormData();
+      console.log("Sending request, file:", file ? file.name : "none", "url:", url); // Debug log
       if (file) {
-        formData.append("file", file); // Attach the file
-        console.log("File added to formData:", file.name); // Log the file added to formData
-        
+        formData.append("file", file);
       } else {
-        formData.append("url", url); // Attach the URL
+        formData.append("url", url);
       }
 
-      console.log("formData contents:", formData);
-  
-      console.log("Sending data:", file ? file.name : url); // Debugging in browser console
-  
-      const response = await axios.post("http://127.0.0.1:5000/analyze", formData);
-  
-      console.log("Received response from Flask:", response.data); // Debugging
-  
-      setResult(response.data); // Store result
+      const response = await axios.post("http://127.0.0.1:5000/analyze", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      console.log("Received response from Flask:", response.data);
+      setResult(response.data);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error details:", error); // More detailed error logging
+      setError(error.response?.data?.error || "Failed to analyze content. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
-  
-  console.log("Button disabled state:", isLoading || (!file && !url));
+
   return (
     <section className="c-space my-10 pt-20">
       <div className="grid-container max-w-4xl mx-auto">
@@ -145,7 +129,7 @@ const InDetect = ({ onBack }) => {
             type="file"
             ref={fileInputRef}
             onChange={handleFileSelect}
-            accept="image/,video/"
+            accept="image/*,video/*"
             className="hidden"
             disabled={!!url}
           />
@@ -178,7 +162,7 @@ const InDetect = ({ onBack }) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <p className="text-lg text-white">Drag and drop your image or video here</p> {/* Changed to text-white */}
+              <p className="text-lg text-gray-700">Drag and drop your image or video here</p>
               <p className="text-sm text-gray-500">Supports: JPG, PNG, GIF, MP4, MOV</p>
               <button
                 onClick={handleBrowseClick}
@@ -216,38 +200,36 @@ const InDetect = ({ onBack }) => {
         {error && !url && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <Button
-          name={'Analyze Content'}
+          name={isLoading ? 'Analyzing...' : 'Analyze Content'}
           isBeam={true}
           containerClass="w-full mb-8"
           onClick={handleAnalyze}
-          disabled={(!file && !url) || (url && !isValidYouTubeUrl(url))}
+          disabled={isLoading || (!file && !url) || (url && !isValidYouTubeUrl(url))}
         />
 
         {result && (
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-4 text-center">Analysis Results</h2>
-            <div className="mb-6">
-              <p className="text-gray-500 mb-1">Analyzed {result.type}:</p>
-              <p className="font-medium truncate">{result.name}</p>
-            </div>
-            <div className="mb-6 text-center">
-              <div
-                className={`text-3xl font-bold mb-2 ${
-                  result.classification === 'AI Generated' ? 'text-red-500' : 'text-green-500'
-                }`}
-              >
-                {result.classification}
+            {result.type && result.name && (
+              <div className="mb-6">
+                <p className="text-gray-500 mb-1">Analyzed {result.type}:</p>
+                <p className="font-medium truncate">{result.name}</p>
               </div>
-              <p className="text-gray-600">Confidence: {result.confidence}</p>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {result.details.map((detail, index) => (
-                <div key={index} className="text-center bg-gray-50 p-3 rounded">
-                  <p className="text-gray-500 text-sm mb-1">{detail.label}</p>
-                  <p className="font-bold">{detail.value}</p>
+            )}
+            {result.deepfake_result !== undefined && (
+              <div className="mb-6 text-center">
+                <div
+                  className={`text-3xl font-bold mb-2 ${
+                    result.deepfake_result ? 'text-red-500' : 'text-green-500'
+                  }`}
+                >
+                  {result.deepfake_result ? 'AI Generated' : 'Real'}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+            {result.message && (
+              <p className="text-gray-500 text-center mt-4">{result.message}</p>
+            )}
           </div>
         )}
       </div>

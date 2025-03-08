@@ -1,10 +1,12 @@
 import React from "react";
 
-const Button = ({ name, isBeam = false, containerClass }) => {
+const Button = ({ name, isBeam = false, containerClass, onClick, disabled }) => {
   return (
-    <button 
-   
-    className={`btn ${containerClass}`}>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`btn ${containerClass} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
       {isBeam && (
         <span className="relative flex h-3 w-3">
           <span className="btn-ping"></span>

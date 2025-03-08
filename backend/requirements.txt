@@ -1,12 +1,12 @@
-cv2
 requests
 numpy
-PIL
+pillow
 boto3
 flask_cors
 flask
 ultralytics
-botocore.exceptions
+botocore
 dotenv 
 google.generativeai 
 openai 
+opencv-python
