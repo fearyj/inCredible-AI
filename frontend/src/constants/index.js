@@ -5,13 +5,13 @@ export const navLinks = [
     href: '#home',
   },
   {
-    id: 'about',
-    name: 'About',
+    id: 'tools',
+    name: 'Tools',
     href: '#about',
   },
   {
-    id: 'projects',
-    name: 'Work',
+    id: 'news',
+    name: 'News',
     href: '#work',
   },
   {

@@ -54,8 +54,8 @@ const App = () => {
           <Hero />
           <About onDetectClick={handleShowInDetect} onFactClick={handleShowInFact} />
           <Projects />
-          <Clients />
-          <WorkExperience />
+          {/* <Clients /> */}
+          {/* <WorkExperience /> */}
           <Contact />
         </>
       )}
