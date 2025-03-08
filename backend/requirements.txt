@@ -1,0 +1,9 @@
+cv2
+requests
+numpy
+PIL
+boto3
+flask_cors
+flask
+ultralytics
+botocore.exceptions
