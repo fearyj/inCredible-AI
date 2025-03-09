@@ -10,7 +10,7 @@ from get_orientation import get_image_orientation_from_url, get_video_orientatio
 from check_filetype import check_file_type_from_url
 
 # def arya_api(file_path): 
-def arya_api(obj_url): 
+def arya_api(obj_url,ARYA_API_KEY): 
     timestamp = time.strftime("%Y%m%d_%H%M%S")  
 
     req_id_string = str(uuid.uuid1())
@@ -62,7 +62,7 @@ def arya_api(obj_url):
     url = "https://ping.arya.ai/api/v1/deepfake-detection/image"
     payload = {"doc_base64": file_base64, "req_id": req_id_string, "isIOS": False, "doc_type": doc_type_string, "orientation":  orient_int,  }
     headers = {
-      'token': '9f20f8c4f36139c7f12fe5e71ed6a14e',
+      'token': ARYA_API_KEY,
       'content-type':'application/json' #sending payload in json format
     }
     response = requests.request("POST", url, json=payload, headers=headers)

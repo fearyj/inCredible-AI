@@ -19,6 +19,7 @@ def configure_app(app):
     app.config['GOOGLE_FACT_CHECK_API_KEY'] = os.getenv("GOOGLE_FACT_CHECK_API_KEY")
     app.config['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY")
     app.config['GEMINI_API_KEY'] = os.getenv("GEMINI_API_KEY")
+    app.config['ARYA_API_KEY'] = os.getenv("ARYA_API_KEY")
     app.config['AWS_ACCESS_KEY'] = os.getenv("AWS_ACCESS_KEY_ID")
     app.config['AWS_SECRET_KEY'] = os.getenv("AWS_SECRET_ACCESS_KEY")
     app.config['AWS_REGION'] = os.getenv("AWS_REGION")

@@ -136,6 +136,7 @@ def process_input(text):
 @api_bp.route('/analyze', methods=['POST'])
 def analyze():
     """Analyze a file or URL for deepfake detection."""
+    ARYAAPI_KEY = current_app.config['ARYA_API_KEY']
     try:
         logger = current_app.logger
         logger.info("Received request at /api/analyze")
@@ -155,7 +156,7 @@ def analyze():
 
 
             try:
-                is_deepfake = arya_api(upload_obj_url)  # Assumes boolean return
+                is_deepfake = arya_api(upload_obj_url,ARYAAPI_KEY)  # Assumes boolean return
                 if not isinstance(is_deepfake, bool):
                     raise ValueError(f"arya_api returned an invalid value: {is_deepfake}")
                 
