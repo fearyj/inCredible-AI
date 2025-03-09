@@ -15,7 +15,7 @@ from web_search import fetch_web_sources
 from ai_analysis import analyze_with_gemini
 from storyboard import generate_storyboard_image
 from config import configure_app
-i
+
 
 
 api_bp = Blueprint('api', __name__)
