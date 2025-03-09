@@ -14,11 +14,7 @@ export const navLinks = [
     name: 'Myths',
     href: '#work',
   },
-  {
-    id: 'contact',
-    name: 'Contact',
-    href: '#contact',
-  },
+
 ];
 
 export const clientReviews = [
