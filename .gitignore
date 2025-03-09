@@ -25,4 +25,33 @@ frontend/yarn-error.log*
 # React cache
 frontend/.eslintcache
 
-myenv
+# Python virtual environments
+backend/venv/
+backend/.env/
+backend/myenv/
+
+# Python bytecode and cache
+backend/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+
+# Python distribution/packaging
+backend/dist/
+backend/build/
+backend/*.egg-info/
+
+# Python logs and virtual environment files
+backend/pip-log.txt
+backend/pip-delete-this-directory.txt
+
+# Jupyter Notebook checkpoints
+backend/.ipynb_checkpoints/
+
+# Pytest cache
+backend/.pytest_cache/
+
+# MyPy cache
+backend/.mypy_cache/
+
+# Cython and compiled files
+backend/*.so
