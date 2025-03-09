@@ -2,9 +2,6 @@
 Installation guide:
 git clone https://github.com/fearyj/inCredible-AI.git
 
-# Go to backend directory
-cd inCredible-AI/backend
-
 # Create python virtual environment
 python -m venv .venv
 
@@ -12,7 +9,10 @@ python -m venv .venv
 source .venv/bin/activate
 
 # For Windows
-IDK
+.venv/Scripts activate
+
+# Go to backend directory
+cd inCredible-AI/backend
 
 # Install Backend modules
 pip install -r requirements.txt
