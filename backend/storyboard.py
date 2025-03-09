@@ -1,6 +1,16 @@
 import logging
+import re
 
 logger = logging.getLogger(__name__)
+
+
+
+def split_paragraph(paragraph):
+    # Regular expression to split sentences by punctuation marks like ., !, or ?
+    sentences = re.split(r'(?<=[.!?])\s+', paragraph)
+    # Join sentences with newline characters
+    return '\n'.join(sentences)
+
 
 def generate_storyboard_image(text, falsehood, reasoning, consequences, openai_client):
     if not openai_client:
@@ -76,11 +86,8 @@ def generate_storyboard_image(text, falsehood, reasoning, consequences, openai_c
         )
 
         generated_prompt = analysis_response.choices[0].message.content
-        if "### Generated Storyboard Prompt" in generated_prompt:
-            lines = generated_prompt.split("\n")
-            formatted_prompt = "\n".join(line.strip() for line in lines if line.strip())
-            generated_prompt = formatted_prompt
-        return image_url, generated_prompt
+        generated_split_prompt= split_paragraph(generated_prompt)
+        return image_url, generated_split_prompt
     
     except Exception as e:
         logger.error(f"Storyboard generation error: {str(e)}")
