@@ -19,7 +19,7 @@
 - **Frontend:** React
 - **Backend:** Flask
 - **Database:** AWS S3
-- **AI/ML:** OpenAI API, Serpapi API, Gemini API, Arya AI API, Google Fact Check API, YOLO model, DALL E 3 API
+- **AI/ML:** OpenAI API, Serpapi API, Gemini API, Arya AI API, Google Fact Check API, YOLO model, DALL E 3 API, AWS Textract
 - **Hosting:** AWS EC2
 
 ---
@@ -35,11 +35,37 @@
 
 ### Prerequisites
 - Node.js & npm installed
-- Python (if AI/ML involved)
-- Any required API keys (e.g., OpenAI API)
+- Python 
+- Required API KEYS:(SERP API, Google Fact Check API, OpenAI API, GEMINI API, ARYA API, AWS ACCESS KEY, AWS SECRET ACCESS KEY, AWS Region)
+
 
 ### Steps
+- Clone the repo
+https://github.com/fearyj/inCredible-AI.git
+- Create python virtual environment
+python -m venv venv
+- Activate virtual environment
+For Windows:
+venv/Scripts/activate
 
+For Mac:
+source venv/bin/activate
+
+- Change directory to frontend
+cd frontend
+- Install npm libraries
+npm install
+
+- Edit the .env file to include your Keys
+
+- Run frontend
+npm run dev
+
+- Run backend
+cd ../backend
+python App.py
+
+- NOTES: Change origins port number to the one shown in terminal when running frontend 
 ---
 
 ## 👨‍👩‍👧‍👦 Team
@@ -60,6 +86,7 @@ We have exciting plans to improve this project! Here are some features we'd love
 - 🔹 **Blockchain verification** - Store fact-checked results on a blockchain for greater transparency.
 - 🔹 **User-submitted fact-checks** - Allow users to submit and vote on misinformation claims.
 - 🔹 **Mobile App Version** - Develop a mobile version of the tool for easier access.
+- 🔹 **Deepfake Detection from URL** - Allow users to paste in Youtube URL to check for deepfake.
 
 ---
 
