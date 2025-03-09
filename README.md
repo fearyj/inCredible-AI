@@ -19,7 +19,7 @@
 - **Frontend:** React
 - **Backend:** Flask
 - **Database:** AWS S3
-- **AI/ML:** OpenAI API, Serpapi API, Gemini API, Arya AI API, Google Fact Check API, YoLo model, DALL E 3 API
+- **AI/ML:** OpenAI API, Serpapi API, Gemini API, Arya AI API, Google Fact Check API, YOLO model, DALL E 3 API
 - **Hosting:** AWS EC2
 
 ---
