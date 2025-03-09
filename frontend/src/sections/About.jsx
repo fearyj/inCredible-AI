@@ -54,7 +54,7 @@ const About = ({ onDetectClick, onFactClick }) => {
 
       {/* Second section: 3D Frames */}
       <div className="mt-24" id='myths'>
-        <h2 className="text-3xl font-bold mb-12 text-center text-white">Myths</h2>
+        <h2 className="text-3xl font-bold mb-12 text-center text-white">Debunking News</h2>
         <NewsFrame />
       </div>
     </section>

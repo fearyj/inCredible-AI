@@ -79,7 +79,7 @@ const InDetect = ({ onBack }) => {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
-        timeout: 30000,
+        timeout: 90000,
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
           console.log(`Upload Progress: ${percentCompleted}%`);
