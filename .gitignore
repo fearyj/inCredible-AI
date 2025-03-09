@@ -29,7 +29,7 @@ frontend/.eslintcache
 backend/venv/
 backend/.env/
 backend/myenv/
-
+backend/.venv/
 # Python bytecode and cache
 backend/__pycache__/
 backend/*.py[cod]

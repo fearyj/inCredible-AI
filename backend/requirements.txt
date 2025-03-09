@@ -10,3 +10,5 @@ dotenv
 google.generativeai 
 openai 
 opencv-python
+beautifulsoup4
+requests

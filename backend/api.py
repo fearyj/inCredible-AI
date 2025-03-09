@@ -1,5 +1,13 @@
-from flask import Blueprint, request, jsonify, render_template, current_app
 import os
+import random
+import requests
+import time
+import logging
+from openai import OpenAI
+from bs4 import BeautifulSoup
+import google.generativeai as genai
+from requests.exceptions import RequestException
+from flask import Blueprint, request, jsonify, render_template, current_app
 from aryaapi import arya_api  # Replace with your deepfake detection API
 from text_extraction import extract_text_from_image
 from fact_check import fetch_fact_check
@@ -7,14 +15,8 @@ from web_search import fetch_web_sources
 from ai_analysis import analyze_with_gemini
 from storyboard import generate_storyboard_image
 from config import configure_app
-import google.generativeai as genai
-from openai import OpenAI
-from bs4 import BeautifulSoup
-import random
-import requests
-import time
-from requests.exceptions import RequestException
-import logging
+i
+
 
 api_bp = Blueprint('api', __name__)
 
