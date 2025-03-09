@@ -40,28 +40,28 @@
 
 
 ### Steps
-- Clone the repo
-https://github.com/fearyj/inCredible-AI.git
-- Create python virtual environment
+- Clone the repo \
+git clone https://github.com/fearyj/inCredible-AI.git
+- Create python virtual environment \
 python -m venv venv
 - Activate virtual environment \
 For Windows: \
-venv/Scripts/activate
+venv/Scripts/activate \
 
 For Mac: \
 source venv/bin/activate
 
-- Change directory to frontend
-cd frontend
-- Install npm libraries
-npm install
+- Change directory to frontend \
+cd frontend \
+- Install npm libraries \
+npm install \
 
 - Edit the .env file to include your Keys
 
-- Run frontend
+- Run frontend \
 npm run dev
 
-- Run backend
+- Run backend \
 cd ../backend \
 python App.py
 
