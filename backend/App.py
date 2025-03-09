@@ -10,7 +10,7 @@ def create_app():
     # Configure CORS for API endpoints
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["http://localhost:5174"],  # Adjust for your frontend
+            "origins": ["http://localhost:5173"],  # Adjust for your frontend
             "methods": ["POST", "OPTIONS"],
             "allow_headers": ["Content-Type"]
         }
