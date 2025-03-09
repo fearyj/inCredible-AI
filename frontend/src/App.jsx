@@ -59,7 +59,7 @@ const App = () => {
           <Projects />
           {/* <Clients /> */}
           {/* <WorkExperience /> */}
-          <NewsFrame />
+
           <Contact />
         </>
       )}

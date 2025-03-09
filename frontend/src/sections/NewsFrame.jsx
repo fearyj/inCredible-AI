@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import './NewsFrame.css'; // Ensure this CSS file exists
+import './NewsFrame.css'; // Using your provided CSS file
 
 const DebunkedMythViewer = () => {
   const [myths, setMyths] = useState([]);
-  const [error, setError] = useState(null); // State to handle errors
+  const [error, setError] = useState(null);
+  const [expandedIndex, setExpandedIndex] = useState(null);
   const frameRefs = useRef([]);
 
   // Fetch debunked myths from Flask backend
@@ -25,14 +26,15 @@ const DebunkedMythViewer = () => {
 
       // Map the API data to the expected format
       const formattedMyths = myths.map((myth) => ({
-        title: myth.myth, // Use the actual myth title
-        subtitle: 'Debunked Myth', 
-        imageSrc: `/api/placeholder/400/320`, // Placeholder image
-        description: 'This myth has been debunked by Snopes.', // Brief description
-        debunkUrl: myth.debunk_url // Store the debunk URL
+        title: myth.myth,
+        subtitle: 'Debunked Myth',
+        description: 'This myth has been debunked by Snopes.',
+        debunkUrl: myth.debunk_url
       }));
 
-      setMyths(formattedMyths);
+      // Remove duplicates
+      const uniqueMyths = removeDuplicates(formattedMyths, 'title');
+      setMyths(uniqueMyths);
       setError(null);
     } catch (err) {
       console.error('Failed to fetch debunked myths:', err);
@@ -41,14 +43,19 @@ const DebunkedMythViewer = () => {
     }
   };
 
+  // Helper function to remove duplicates based on a key
+  const removeDuplicates = (array, key) => {
+    return Array.from(new Map(array.map(item => [item[key], item])).values());
+  };
+
   // Set up refs for each frame
   useEffect(() => {
-    frameRefs.current = frameRefs.current.slice(0, myths.length); // Adjust refs based on myths length
+    frameRefs.current = frameRefs.current.slice(0, myths.length);
   }, [myths]);
 
   // 3D card effect functions
   const handleMouseMove = (e, index) => {
-    if (!frameRefs.current[index]) return;
+    if (expandedIndex !== null || !frameRefs.current[index]) return;
 
     const frame = frameRefs.current[index];
     const rect = frame.getBoundingClientRect();
@@ -87,7 +94,7 @@ const DebunkedMythViewer = () => {
   };
 
   const handleMouseLeave = (index) => {
-    if (!frameRefs.current[index]) return;
+    if (expandedIndex !== null || !frameRefs.current[index]) return;
 
     const frame = frameRefs.current[index];
     frame.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
@@ -99,7 +106,15 @@ const DebunkedMythViewer = () => {
     }
   };
 
-  // Render error message if fetching fails or no myths are available
+  // Toggle expanded state for a card
+  const toggleExpand = (index) => {
+    if (expandedIndex === index) {
+      setExpandedIndex(null);
+    } else {
+      setExpandedIndex(index);
+    }
+  };
+
   if (error) {
     return (
       <div className="text-center text-red-500 p-4">
@@ -108,7 +123,6 @@ const DebunkedMythViewer = () => {
     );
   }
 
-  // Render a message if no myths are available but no error occurred
   if (myths.length === 0) {
     return (
       <div className="text-center text-gray-500 p-4">
@@ -119,38 +133,35 @@ const DebunkedMythViewer = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {expandedIndex !== null && (
+        <div 
+          className={`frame-overlay ${expandedIndex !== null ? 'active' : ''}`}
+          onClick={() => setExpandedIndex(null)}
+        ></div>
+      )}
+      
       {myths.map((frame, index) => (
         <div
           key={index}
           ref={(el) => (frameRefs.current[index] = el)}
-          className="frame-card relative overflow-hidden rounded-xl transition-all duration-500"
+          className={`frame-card rounded-xl ${expandedIndex === index ? 'expanded-frame' : ''}`}
           onMouseMove={(e) => handleMouseMove(e, index)}
           onMouseLeave={() => handleMouseLeave(index)}
+          onClick={() => toggleExpand(index)}
         >
-          <div className="frame-border absolute inset-0 border border-white/10 rounded-xl pointer-events-none z-10"></div>
+          <div className="frame-border absolute inset-0 border border-gray-700 rounded-xl pointer-events-none z-10"></div>
 
-          <div className="frame-image absolute inset-0 z-0">
-            <img
-              src={frame.imageSrc}
-              alt={frame.title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = '/api/placeholder/400/320'; // Fallback image
-              }}
-            />
-          </div>
-
-          <div className="frame-content relative z-[5] flex flex-col h-full p-6">
-            <div className="frame-header transform-gpu" style={{ transform: 'translateZ(25px)' }}>
+          <div className="frame-content relative z-5 flex flex-col h-full p-6">
+            <div className="frame-header" style={{ transform: 'translateZ(25px)' }}>
               <p
-                className="frame-subtitle text-center text-sm opacity-80 transform-gpu"
+                className="frame-subtitle text-center text-sm opacity-80"
                 style={{ transform: 'translateZ(20px)' }}
               >
                 {frame.subtitle}
               </p>
 
               <h3
-                className="frame-title text-xl md:text-2xl font-bold text-center mt-2 relative transform-gpu"
+                className="frame-title text-xl md:text-2xl font-bold text-center mt-2 relative"
                 style={{ transform: 'translateZ(30px)' }}
               >
                 {frame.title}
@@ -159,22 +170,41 @@ const DebunkedMythViewer = () => {
 
             {/* Description text - always visible */}
             <div 
-              className="description-text mt-4 text-center opacity-90 transform-gpu"
+              className="description-text mt-4 text-center opacity-90"
               style={{ transform: 'translateZ(25px)' }}
             >
               <p>{frame.description}</p>
             </div>
 
-            {/* Read Article button - links directly to the debunk URL */}
+            {/* Expanded content */}
+            {expandedIndex === index && (
+              <div className="article-content mt-4">
+                <p>Learn more about this debunked claim by visiting the source article at Snopes.</p>
+                <div className="mt-4">
+                  <button 
+                    className="close-button absolute top-4 right-4 bg-gray-800 hover:bg-gray-700 p-2 rounded-full"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setExpandedIndex(null);
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Read Article button */}
             <div
-              className="frame-footer mt-auto transform-gpu opacity-90 transition-all duration-300 ease-out"
+              className="frame-footer mt-auto opacity-90 transition-all duration-300 ease-out"
               style={{ transform: 'translateZ(25px)' }}
             >
               <a 
                 href={frame.debunkUrl} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="read-more-btn w-full py-2 mt-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white font-medium block text-center"
+                className="read-more-btn w-full py-2 mt-6 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg font-medium block text-center"
+                onClick={(e) => e.stopPropagation()}
               >
                 Read Article
               </a>
