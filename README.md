@@ -65,9 +65,9 @@ We have exciting plans to improve this project! Here are some features we'd love
 
 ## 📬 Contact
 For questions, reach out to us at:
-Ken - ytan244@e.ntu.edu.sg
-Jing Huan - hooj0006@e.ntu.edu.sg
-Peng Yee - tanp0124@e.ntu.edu.sg
-Rachel - RPHUAR001@e.ntu.edu.sg
+- Ken - ytan244@e.ntu.edu.sg
+- Jing Huan - hooj0006@e.ntu.edu.sg
+- Peng Yee - tanp0124@e.ntu.edu.sg
+- Rachel - RPHUAR001@e.ntu.edu.sg
 
 ✨ *Made with ❤️ at [TechFest - 2025]* ✨
