@@ -10,7 +10,7 @@
 > **inCredible AI is a powerful web platform designed to combat the spread of online misinformation. It integrates real-time fact-checking, deepfake detection, and a curated display of the top three recent misinformation trends—all in one user-friendly interface.**
 
 ## 🎥 Demo
-- [Watch Demo on YouTube](https://youtube.com/xxx)
+- [Watch Demo on YouTube](https://youtu.be/-eeRGCHtam0)
 
 ---
 
