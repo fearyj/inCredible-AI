@@ -56,9 +56,9 @@ const Navbar = ({ onNavigate, currentSection }) => {
             <img 
               src="assets/logo.png" 
               alt="inCredible AI Logo" 
-              className="h-6 w-auto mr-2" 
+              className="h-16 w-auto mr-2" 
             />
-            <span>inCredible AI</span>
+          <span className="text-2xl sm:text-3xl">inCredible AI</span>
           </a>
           <button
             onClick={toggleMenu}
