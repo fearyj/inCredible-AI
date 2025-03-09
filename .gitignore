@@ -24,3 +24,5 @@ frontend/yarn-error.log*
 
 # React cache
 frontend/.eslintcache
+
+myenv
