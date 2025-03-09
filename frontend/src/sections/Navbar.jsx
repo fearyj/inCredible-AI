@@ -41,19 +41,24 @@ const Navbar = ({ onNavigate, currentSection }) => {
   
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/90">
-      {/* Width constraint container */}
-      <div className="max-w-5xl mx-auto">
-        {/* Increased vertical padding for more height */}
-        <div className="flex justify-between items-center py-6 mx-auto c-space"> {/* Changed py-5 to py-6 for more height */}
+      {/* Container without max-width constraint for left alignment */}
+      <div className="px-8 sm:px-16">
+        <div className="flex justify-between items-center py-6"> 
           <a
             href="#home"
-            className="text-neutral-400 font-bold text-xl hover:text-white transition-colors"
+            className="flex items-center text-neutral-400 font-bold text-xl hover:text-white transition-colors"
             onClick={(e) => {
               e.preventDefault();
               handleNavigation('home');
             }}
           >
-            inCredible AI
+            {/* Logo image */}
+            <img 
+              src="assets/logo.png" 
+              alt="inCredible AI Logo" 
+              className="h-6 w-auto mr-2" 
+            />
+            <span>inCredible AI</span>
           </a>
           <button
             onClick={toggleMenu}
@@ -66,7 +71,7 @@ const Navbar = ({ onNavigate, currentSection }) => {
           </nav>
         </div>
       </div>
-      <div className={`nav-sidebar ${isOpen ? 'max-h-screen' : 'max-h-0'} max-w-5xl mx-auto`}>
+      <div className={`nav-sidebar ${isOpen ? 'max-h-screen' : 'max-h-0'} px-8 sm:px-16`}>
         <nav className="p-5">
           <NavItems onClick={closeMenu} onNavigate={handleNavigation} currentSection={currentSection}/>
         </nav>

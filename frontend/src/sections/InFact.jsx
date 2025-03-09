@@ -133,7 +133,7 @@ const InFact = ({ onBack }) => {
   return (
     <div className="flex flex-col h-screen bg-black text-white w-full">
       {/* Messages Area - full width container */}
-      <div className="flex-1 overflow-y-auto px-4 py-0 w-full">
+      <div className="flex-1 overflow-y-auto px-4 py-4 w-full pt-24">
         {messages.map((message) => {
           return (
             <div
