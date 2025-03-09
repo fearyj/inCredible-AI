@@ -27,7 +27,6 @@ const DebunkedMythViewer = () => {
       // Map the API data to the expected format
       const formattedMyths = myths.map((myth) => ({
         title: myth.myth,
-        subtitle: 'Debunked Myth',
         description: 'This myth has been debunked by Snopes.',
         debunkUrl: myth.debunk_url
       }));
@@ -141,75 +140,64 @@ const DebunkedMythViewer = () => {
       )}
       
       {myths.map((frame, index) => (
-        <div
-          key={index}
-          ref={(el) => (frameRefs.current[index] = el)}
-          className={`frame-card rounded-xl ${expandedIndex === index ? 'expanded-frame' : ''}`}
-          onMouseMove={(e) => handleMouseMove(e, index)}
-          onMouseLeave={() => handleMouseLeave(index)}
-          onClick={() => toggleExpand(index)}
-        >
-          <div className="frame-border absolute inset-0 border border-gray-700 rounded-xl pointer-events-none z-10"></div>
+        <div key={index} className="flex flex-col">
+          <div
+            ref={(el) => (frameRefs.current[index] = el)}
+            className={`frame-card rounded-xl ${expandedIndex === index ? 'expanded-frame' : ''}`}
+            onMouseMove={(e) => handleMouseMove(e, index)}
+            onMouseLeave={() => handleMouseLeave(index)}
+            onClick={() => toggleExpand(index)}
+          >
+            <div className="frame-border absolute inset-0 border border-gray-700 rounded-xl pointer-events-none z-10"></div>
 
-          <div className="frame-content relative z-5 flex flex-col h-full p-6">
-            <div className="frame-header" style={{ transform: 'translateZ(25px)' }}>
-              <p
-                className="frame-subtitle text-center text-sm opacity-80"
-                style={{ transform: 'translateZ(20px)' }}
-              >
-                {frame.subtitle}
-              </p>
-
-              <h3
-                className="frame-title text-xl md:text-2xl font-bold text-center mt-2 relative"
-                style={{ transform: 'translateZ(30px)' }}
-              >
-                {frame.title}
-              </h3>
-            </div>
-
-            {/* Description text - always visible */}
-            <div 
-              className="description-text mt-4 text-center opacity-90"
-              style={{ transform: 'translateZ(25px)' }}
-            >
-              <p>{frame.description}</p>
-            </div>
-
-            {/* Expanded content */}
-            {expandedIndex === index && (
-              <div className="article-content mt-4">
-                <p>Learn more about this debunked claim by visiting the source article at Snopes.</p>
-                <div className="mt-4">
-                  <button 
-                    className="close-button absolute top-4 right-4 bg-gray-800 hover:bg-gray-700 p-2 rounded-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setExpandedIndex(null);
-                    }}
-                  >
-                    ✕
-                  </button>
-                </div>
+            <div className="frame-content relative z-5 flex flex-col h-full p-6">
+              <div className="frame-header" style={{ transform: 'translateZ(25px)' }}>
+                <h3
+                  className="frame-title text-xl md:text-2xl font-bold text-center mt-2 relative"
+                  style={{ transform: 'translateZ(30px)' }}
+                >
+                  {frame.title}
+                </h3>
               </div>
-            )}
 
-            {/* Read Article button */}
-            <div
-              className="frame-footer mt-auto opacity-90 transition-all duration-300 ease-out"
-              style={{ transform: 'translateZ(25px)' }}
-            >
-              <a 
-                href={frame.debunkUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="read-more-btn w-full py-2 mt-6 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg font-medium block text-center"
-                onClick={(e) => e.stopPropagation()}
+              {/* Description text - always visible */}
+              <div 
+                className="description-text mt-4 text-center opacity-90"
+                style={{ transform: 'translateZ(25px)' }}
               >
-                Read Article
-              </a>
+                <p>{frame.description}</p>
+              </div>
+
+              {/* Expanded content */}
+              {expandedIndex === index && (
+                <div className="article-content mt-4">
+                  <p>Learn more about this debunked claim by visiting the source article at Snopes.</p>
+                  <div className="mt-4">
+                    <button 
+                      className="close-button absolute top-4 right-4 bg-gray-800 hover:bg-gray-700 p-2 rounded-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedIndex(null);
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
+          
+          {/* Read Article button - completely outside the frame */}
+          <a 
+            href={frame.debunkUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="read-more-btn w-full py-2 mt-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg font-medium text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Read Article
+          </a>
         </div>
       ))}
     </div>
