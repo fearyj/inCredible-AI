@@ -44,11 +44,11 @@
 https://github.com/fearyj/inCredible-AI.git
 - Create python virtual environment
 python -m venv venv
-- Activate virtual environment
-For Windows:
+- Activate virtual environment \
+For Windows: \
 venv/Scripts/activate
 
-For Mac:
+For Mac: \
 source venv/bin/activate
 
 - Change directory to frontend
@@ -62,7 +62,7 @@ npm install
 npm run dev
 
 - Run backend
-cd ../backend
+cd ../backend \
 python App.py
 
 - NOTES: Change origins port number to the one shown in terminal when running frontend 
