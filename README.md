@@ -2,12 +2,12 @@
 
 ### 🏆 TechFest - 2025
 
-> **"An all-in-one web platform for real-time fact-checking, deepfake detection, and tracking the latest misinformation trends."**
+> **An all-in-one web platform for real-time fact-checking, deepfake detection, and tracking the latest misinformation trends.**
 
 ---
 
 ## 🎯 About the Project
-> "inCredible AI is a powerful web platform designed to combat the spread of online misinformation. It integrates real-time fact-checking, deepfake detection, and a curated display of the top three recent misinformation trends—all in one user-friendly interface."
+> **inCredible AI is a powerful web platform designed to combat the spread of online misinformation. It integrates real-time fact-checking, deepfake detection, and a curated display of the top three recent misinformation trends—all in one user-friendly interface.**
 
 ## 🎥 Demo
 - [Watch Demo on YouTube](https://youtube.com/xxx)
@@ -46,15 +46,15 @@ git clone https://github.com/fearyj/inCredible-AI.git
 python -m venv venv
 - Activate virtual environment \
 For Windows: \
-venv/Scripts/activate \
+venv/Scripts/activate 
 
 For Mac: \
 source venv/bin/activate
 
 - Change directory to frontend \
-cd frontend \
+cd frontend 
 - Install npm libraries \
-npm install \
+npm install 
 
 - Edit the .env file to include your Keys
 
