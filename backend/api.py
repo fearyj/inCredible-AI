@@ -15,8 +15,6 @@ from web_search import fetch_web_sources
 from ai_analysis import analyze_with_gemini
 from storyboard import generate_storyboard_image
 from config import configure_app
-import google.generativeai as genai
-from openai import OpenAI
 import tempfile
 from deepfake_process import deepfake_to_S3
 from file_type_check import check_file_type
@@ -117,7 +115,7 @@ def process_input(text):
     OpenAPI_key = current_app.config['OPENAI_API_KEY'] 
 
     fact_check_results = fetch_fact_check(text, GoogleFact_key)
-    falsehood, reasoning, tips, consequences = analyze_with_gemini(text, genai.GenerativeModel('gemini-2.0-flash'), fact_check_results)
+    falsehood, reasoning, tips, consequences = analyze_with_gemini(text, genai.GenerativeModel('gemini-1.5-pro'), fact_check_results)
     sources = fetch_web_sources(text, serpapi_key, genai.GenerativeModel('gemini-2.0-flash'))
     summary = reasoning[:200] if reasoning else "No summary available"
     storyboard_image_url, storyboard_description = generate_storyboard_image(text, falsehood, reasoning, consequences, OpenAI(api_key=OpenAPI_key))
