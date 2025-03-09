@@ -4,17 +4,6 @@
 
 > **"An all-in-one web platform for real-time fact-checking, deepfake detection, and tracking the latest misinformation trends."**
 
-## 📌 Table of Contents
-- [About the Project](#about-the-project)
-- [Demo](#demo)
-- [Tech Stack](#tech-stack)
-- [Features](#features)
-- [Setup & Installation](#setup--installation)
-- [How to Use](#how-to-use)
-- [Team](#team)
-- [Future Enhancements](#future-enhancements)
-- [License](#license)
-
 ---
 
 ## 🎯 About the Project
@@ -50,18 +39,6 @@
 - Any required API keys (e.g., OpenAI API)
 
 ### Steps
-```sh
-# Clone the repository
-git clone https://github.com/your-username/your-project.git
-
-# Navigate into the project folder
-cd your-project
-
-# Install dependencies
-npm install  # or yarn install
-
-# Run the development server
-npm start  # or yarn start
 
 ---
 
