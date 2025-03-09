@@ -49,7 +49,7 @@ Meet the amazing team behind this project! 🎉
 |------------|----------------------|-------------------|
 | **Tan Yoong Ken** | Backend Developer| [GitHub](https://github.com/fearyj) / [LinkedIn](https://www.linkedin.com/in/tan-yoong-ken-972a65252/) |
 | **Hoo Jing Huan** | Backend Developer | [GitHub](https://github.com/JingHuan921) / [LinkedIn](https://www.linkedin.com/in/jing-huan-hoo-882971141/) |
-| **Tan Peng Yee** | Frontend Developer | [GitHub](https://github.com/RustySooty) / [LinkedIn](hhttps://www.linkedin.com/in/pengyeetan/) |
+| **Tan Peng Yee** | Frontend Developer | [GitHub](https://github.com/RustySooty) / [LinkedIn](https://www.linkedin.com/in/pengyeetan/) |
 | **Rachel Phuar Yi Ling** | Frontend Developer| [GitHub](https://github.com/rxxchel) / [LinkedIn](https://www.linkedin.com/in/rachel-p-8002b2221/) |
 ---
 
