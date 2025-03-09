@@ -3,9 +3,7 @@ import axios from 'axios';
 import Button from '../components/Button.jsx';
 
 const InFact = ({ onBack }) => {
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Fact Check with InFact", sender: "bot" },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -22,6 +20,7 @@ const InFact = ({ onBack }) => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
+
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -132,22 +131,18 @@ const InFact = ({ onBack }) => {
   };
 
   return (
-    <section className="c-space my-10">
-      <div className="grid-container max-w-4xl mx-auto">
-        <h1 className="grid-headtext text-center mb-6">InFact - AI Chat Assistant</h1>
-        <p className="grid-subtext text-center mb-8">
-          Chat with our AI-powered assistant for insights on media analysis.
-        </p>
-
-        <div className="border-2 border-gray-300 rounded-lg p-6 mb-6 bg-gray-900 text-white overflow-y-auto max-h-96">
-          {messages.map((message) => (
+    <div className="flex flex-col h-screen bg-black text-white w-full">
+      {/* Messages Area - full width container */}
+      <div className="flex-1 overflow-y-auto px-4 py-0 w-full">
+        {messages.map((message) => {
+          return (
             <div
               key={message.id}
               className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"} mb-4`}
             >
               {message.sender === "bot" && message.falsehood_percentage !== undefined ? (
                 <div className="flex w-full space-x-4">
-                  <div className="flex-1 bg-gray-700 text-gray-100 rounded-lg rounded-bl-none px-4 py-3">
+                  <div className="w-1/2 bg-gray-800 text-gray-100 rounded-lg rounded-bl-none px-4 py-3">
                     <div className="mb-3">
                       <div className="text-sm font-semibold mb-1">Falsehood Score</div>
                       <div className="flex items-center">
@@ -219,26 +214,32 @@ const InFact = ({ onBack }) => {
                     )}
                   </div>
 
-                  {message.storyboard_image && (
-                    <div className="w-32 sm:w-48">
-                      <div className="text-sm font-semibold mb-1 text-center">Storyboard</div>
-                      <img
-                        src={message.storyboard_image}
-                        alt={message.storyboard_description || "Analysis storyboard"}
-                        className="w-full h-auto rounded-md object-cover"
-                      />
-                      {message.storyboard_description && (
-                        <p className="text-xs mt-1">{message.storyboard_description}</p>
-                      )}
-                    </div>
-                  )}
+                  <div className="w-1/2 bg-gray-800 rounded-lg p-3">
+                    <div className="text-sm font-semibold mb-2 text-center">Storyboard</div>
+                    {message.storyboard_image ? (
+                      <>
+                        <img
+                          src={message.storyboard_image}
+                          alt={message.storyboard_description || "Analysis storyboard"}
+                          className="w-full h-auto rounded-md object-cover"
+                        />
+                        {message.storyboard_description && (
+                          <p className="text-xs mt-2">{message.storyboard_description}</p>
+                        )}
+                      </>
+                    ) : (
+                      <div className="h-full flex items-center justify-center text-gray-500">
+                        No storyboard available
+                      </div>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <div
                   className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-2 rounded-lg ${
                     message.sender === "user"
                       ? "bg-indigo-600 text-white rounded-br-none"
-                      : "bg-gray-700 text-gray-100 rounded-bl-none"
+                      : "bg-gray-900 text-gray-100 rounded-bl-none"
                   }`}
                 >
                   {message.text}
@@ -250,54 +251,60 @@ const InFact = ({ onBack }) => {
                 </div>
               )}
             </div>
-          ))}
-          {isAnalyzing && (
-            <div className="flex justify-start mb-4">
-              <div className="bg-gray-700 text-gray-100 rounded-lg rounded-bl-none px-4 py-2">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full mr-1 animate-pulse"></div>
-                  <div
-                    className="w-2 h-2 bg-gray-400 rounded-full mr-1 animate-pulse"
-                    style={{ animationDelay: "0.2s" }}
-                  ></div>
-                  <div
-                    className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"
-                    style={{ animationDelay: "0.4s" }}
-                  ></div>
-                </div>
+          );
+        })}
+        
+        {isAnalyzing && (
+          <div className="flex justify-start mb-4">
+            <div className="bg-gray-700 text-gray-100 rounded-lg rounded-bl-none px-4 py-2">
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-gray-400 rounded-full mr-1 animate-pulse"></div>
+                <div
+                  className="w-2 h-2 bg-gray-400 rounded-full mr-1 animate-pulse"
+                  style={{ animationDelay: "0.2s" }}
+                ></div>
+                <div
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"
+                  style={{ animationDelay: "0.4s" }}
+                ></div>
               </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {previewUrl && (
-          <div className="mb-4 relative">
-            <div className="relative inline-block">
-              <img
-                src={previewUrl}
-                alt="Selected image"
-                className="max-h-32 rounded-lg border border-gray-600"
-              />
-              <button
-                onClick={removeSelectedImage}
-                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                aria-label="Remove image"
-              >
-                ×
-              </button>
             </div>
           </div>
         )}
+        
+        <div ref={messagesEndRef} />
+      </div>
 
-        <form onSubmit={handleSendMessage} className="border-t border-gray-700 p-4 bg-gray-800 rounded-lg">
+      {/* Image Preview Area */}
+      {previewUrl && (
+        <div className="px-4 pb-2">
+          <div className="relative inline-block">
+            <img
+              src={previewUrl}
+              alt="Selected image"
+              className="max-h-32 rounded-lg border border-gray-600"
+            />
+            <button
+              onClick={removeSelectedImage}
+              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+              aria-label="Remove image"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Input Area - now full width */}
+      <div className="sticky bottom-0 left-0 right-0 z-20 bg-black w-full">
+        <form onSubmit={handleSendMessage} className="bg-black px-4 py-3 border-t border-gray-800 w-full">
           <div className="flex space-x-2">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 bg-gray-700 border border-gray-600 text-white rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
+              className="flex-1 bg-gray-900 border border-gray-700 text-white rounded-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
               disabled={isAnalyzing}
             />
 
@@ -335,17 +342,27 @@ const InFact = ({ onBack }) => {
               </svg>
             </button>
 
-            <Button
-              name="Send"
-              isBeam
-              containerClass="px-4 py-2"
-              onClick={handleSendMessage}
-              disabled={isAnalyzing || (inputValue.trim() === "" && !selectedImage)}
-            />
+            <div className="flex items-center">
+              <button
+                type="button"
+                className="bg-gray-900 hover:bg-gray-800 text-white rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 mr-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </button>
+              <Button
+                name="Send"
+                isBeam
+                containerClass="px-4 py-2"
+                onClick={handleSendMessage}
+                disabled={isAnalyzing || (inputValue.trim() === "" && !selectedImage)}
+              />
+            </div>
           </div>
         </form>
       </div>
-    </section>
+    </div>
   );
 };
 

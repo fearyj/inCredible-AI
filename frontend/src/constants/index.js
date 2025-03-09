@@ -10,8 +10,8 @@ export const navLinks = [
     href: '#about',
   },
   {
-    id: 'news',
-    name: 'News',
+    id: 'myths',
+    name: 'Myths',
     href: '#work',
   },
   {

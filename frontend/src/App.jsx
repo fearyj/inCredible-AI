@@ -44,27 +44,33 @@ const App = () => {
       }, 100);
     }
   };
-
   return (
-    <main className="max-w-7xl mx-auto relative">
-      <Navbar onNavigate={handleNavigation} currentSection={currentSection} />
-      {showInDetect ? (
-        <InDetect onBack={handleBackToMain} />
-      ) : showInFact ? (
-        <InFact onBack={handleBackToMain} />
-      ) : (
-        <>
-          <Hero />
-          <About onDetectClick={handleShowInDetect} onFactClick={handleShowInFact} />
-          <Projects />
-          {/* <Clients /> */}
-          {/* <WorkExperience /> */}
-
-          <Contact />
-        </>
-      )}
+    <div className="flex flex-col min-h-screen bg-[#111] w-full">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#111]">
+        <div className="max-w-7xl mx-auto">
+          <Navbar onNavigate={handleNavigation} currentSection={currentSection} />
+        </div>
+      </header>
+      
+      <main className={`flex-grow pt-1 mb-16 ${showInFact ? 'w-full' : 'max-w-5xl mx-auto'} relative`}>
+        {showInDetect ? (
+          <InDetect onBack={handleBackToMain} />
+        ) : showInFact ? (
+          <InFact onBack={handleBackToMain} />
+        ) : (
+          <>
+            <Hero />
+            <About onDetectClick={handleShowInDetect} onFactClick={handleShowInFact} />
+            <Projects />
+            {/* <Clients /> */}
+            {/* <WorkExperience /> */}
+            <Contact />
+          </>
+        )}
+      </main>
+      
       <Footer />
-    </main>
+    </div>
   );
 };
 
