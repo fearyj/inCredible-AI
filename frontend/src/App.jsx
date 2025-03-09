@@ -10,6 +10,7 @@ import Projects from './sections/Projects.jsx';
 import WorkExperience from './sections/Experience.jsx';
 import InDetect from './sections/InDetect.jsx';
 import InFact from './sections/InFact.jsx';
+import NewsFrame from './sections/NewsFrame.jsx';
 
 
 
@@ -58,6 +59,7 @@ const App = () => {
           <Projects />
           {/* <Clients /> */}
           {/* <WorkExperience /> */}
+          <NewsFrame />
           <Contact />
         </>
       )}
