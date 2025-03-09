@@ -4,7 +4,9 @@ import cv2
 import random
 
 def edit_fake_image(captured_frame): 
+    print("Starting to edit fake image")
     pil_image = Image.fromarray(cv2.cvtColor(captured_frame, cv2.COLOR_BGR2RGB))
+    print("Successfully loading pil_image")
     draw = ImageDraw.Draw(pil_image)
 
     # Define text and load a custom font (larger size for visibility)

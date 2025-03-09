@@ -102,7 +102,7 @@ const InDetect = ({ onBack }) => {
       }
       
       // Make API call
-      const response = await axios.post('https://your-api-endpoint.com/analyze', formData, {
+      const response = await axios.post('https://127.0.0.1:5001/api/analyze', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

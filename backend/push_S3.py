@@ -1,7 +1,7 @@
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
 
-def push_obj (object_path, object_name): 
+def push_obj(object_path, object_name): 
     # AWS credentials (if not already set in environment variables)
     aws_access_key = 'AKIAYHJANJ6IC7WTOIWJ'
     aws_secret_key = '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'
@@ -17,7 +17,12 @@ def push_obj (object_path, object_name):
         print(f"Bucket {bucket_name} exists.")
 
         # Upload the image
+        print("Testing s3_client.upload_file")
+        print(f"object_path: {object_path}")
+        print(f"object_name: {object_name}")
+        print("Testing end")
         s3_client.upload_file(object_path, bucket_name, object_name)
+        
         print("File uploaded successfully!")
 
         # Generate the public URL
@@ -35,3 +40,9 @@ def push_obj (object_path, object_name):
         print("Credentials not available.")
 
     return public_url
+
+
+
+if __name__ == '__main__': 
+    object_path = r"C:\Users\jingh\OneDrive - Nanyang Technological University\NTU_Computer Science\techfest_misinf\photos and vids\random girl.jpg"
+    push_obj(object_path=object_path, object_name="random_girl.jpg")

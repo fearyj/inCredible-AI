@@ -15,7 +15,14 @@ from web_search import fetch_web_sources
 from ai_analysis import analyze_with_gemini
 from storyboard import generate_storyboard_image
 from config import configure_app
-
+import google.generativeai as genai
+from openai import OpenAI
+import tempfile
+from deepfake_process import deepfake_to_S3
+from file_type_check import check_file_type
+from push_S3 import push_obj
+from convert_url import convert_url_to_temp_path
+from temp_save_file import save_file_temporarily
 
 
 api_bp = Blueprint('api', __name__)
@@ -143,21 +150,36 @@ def analyze():
             file.save(file_path)
             logger.info(f"File saved: {file_path}")
 
+            upload_obj_url = push_obj(object_path = file_path, object_name= f"USER_UPLOAD_{filename}")
+            logger.info(f"Pushed file onto S3: {upload_obj_url}")
+
+
             try:
-                is_deepfake = arya_api(file_path)  # Assumes boolean return
+                is_deepfake = arya_api(upload_obj_url)  # Assumes boolean return
+                if not isinstance(is_deepfake, bool):
+                    raise ValueError(f"arya_api returned an invalid value: {is_deepfake}")
+                
                 response = {
                     "type": "file",
                     "name": filename,
                     "deepfake_result": is_deepfake,
                     "message": "File received"
                 }
+                if is_deepfake: 
+                    is_video = True if check_file_type(upload_obj_url) == 'Video' else False
+
+                    # file_path = convert_url_to_temp_path(upload_obj_url)
+                    logger.info(f"The temporary file path is {file_path}")
+                    public_url = deepfake_to_S3(file_path, is_video)
+                    response["s3_url"] = public_url
+                    logger.info(f"Generated URL: " + public_url)
+                else: 
+                    pass
+
             except Exception as e:
                 logger.error(f"Error processing file with arya_api: {e}")
                 return jsonify({"error": f"Failed to analyze file: {str(e)}"}), 500
-            finally:
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-                    logger.info(f"Cleaned up file: {file_path}")
+
 
         elif 'url' in request.form:
             url = request.form['url']
@@ -180,7 +202,7 @@ def analyze():
 @api_bp.route('/result')
 def result():
     """Render the result page."""
-    return render_template('result.html')
+    #return jsonify
 
 @api_bp.route('/get_share_data/<platform>')
 def get_share_data(platform):
