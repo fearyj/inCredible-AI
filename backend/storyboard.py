@@ -55,39 +55,40 @@ def generate_storyboard_image(text, falsehood, reasoning, consequences, openai_c
         logger.info(f"Generated comical storyboard: {image_url}")
 
         analysis_response = openai_client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": f"""Analyze this 4-panel comical storyboard about spreading the false claim '{text}'. 
-        Generate a description based on the image in this exact format:
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"""Analyze this 4-panel comical storyboard about spreading the false claim '{text}'. 
+            Generate a description based on the image in this exact format:
 
-        ### Generated Storyboard Prompt
-        - **Panel 1**: [Brief, humorous description of the character's action based on the image]
-        - **Panel 2**: [Brief, humorous description of spreading the claim to others]
-        - **Panel 3**: [Brief, humorous description of the crowd's funny reaction]
-        - **Panel 4**: [Brief, humorous description of the aftermath and realization]
+            ### Generated Storyboard Prompt
+            - **Panel 1**: [Brief, humorous description of the character's action based on the image]
+            - **Panel 2**: [Brief, humorous description of spreading the claim to others]
+            - **Panel 3**: [Brief, humorous description of the crowd's funny reaction]
+            - **Panel 4**: [Brief, humorous description of the aftermath and realization]
 
-        **Educational Note**: [Short, witty debunking of '{text}' and a nod to WHO/CDC]
+            **Educational Note**: [Short, witty debunking of '{text}' and a nod to WHO/CDC]
 
-        Keep it concise, funny, and based on what you see in the image! Ensure proper line breaks and bold formatting."""
-                        },
-                        {
-                            "type": "image_url",
-                            "image_url": {"url": image_url}
-                        }
-                    ]
-                }
-            ],
-            max_tokens=300
+            Keep it concise, funny, and based on what you see in the image! Ensure proper line breaks and bold formatting."""
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": image_url}
+                    }
+                ]
+            }
+        ],
+        max_tokens=300
         )
 
         generated_prompt = analysis_response.choices[0].message.content
-        generated_split_prompt= split_paragraph(generated_prompt)
-        return image_url, generated_split_prompt
+        # Ensure it's a string with \n separators (no split_paragraph needed if OpenAI handles it)
+        storyboard_description = generated_prompt
+        return image_url, storyboard_description
     
     except Exception as e:
         logger.error(f"Storyboard generation error: {str(e)}")
