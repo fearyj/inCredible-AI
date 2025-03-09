@@ -42,8 +42,8 @@ const Navbar = ({ onNavigate, currentSection }) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/90">
       {/* Container without max-width constraint for left alignment */}
-      <div className="px-8 sm:px-16">
-        <div className="flex justify-between items-center py-6"> 
+      <div className="px-8 sm:px-18">
+        <div className="flex justify-between items-center py-4"> 
           <a
             href="#home"
             className="flex items-center text-neutral-400 font-bold text-xl hover:text-white transition-colors"
