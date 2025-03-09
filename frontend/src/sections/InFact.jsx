@@ -21,7 +21,6 @@ const InFact = ({ onBack }) => {
     };
   }, [previewUrl]);
 
-
   const handleSendMessage = async (e) => {
     e.preventDefault();
     const hasText = inputValue.trim() !== "";
@@ -223,8 +222,26 @@ const InFact = ({ onBack }) => {
                           alt={message.storyboard_description || "Analysis storyboard"}
                           className="w-full h-auto rounded-md object-cover"
                         />
-                        {message.storyboard_description && (
-                          <p className="text-xs mt-2">{message.storyboard_description}</p>
+                        {message.storyboard_description ? (
+                          <div className="text-xs mt-2">
+                            {(Array.isArray(message.storyboard_description) ? message.storyboard_description : message.storyboard_description.split('\n'))
+                              .filter(line => line.trim() && line.trim() !== "### Generated Storyboard Prompt")
+                              .map((line, index) => {
+                                const parts = line.split(/(\*\*[^\*]+\*\*)/g);
+                                return (
+                                  <p key={index} className="mb-1">
+                                    {parts.map((part, i) => {
+                                      if (part.startsWith('**') && part.endsWith('**')) {
+                                        return <strong key={i}>{part.slice(2, -2)}</strong>;
+                                      }
+                                      return part;
+                                    })}
+                                  </p>
+                                );
+                              })}
+                          </div>
+                        ) : (
+                          <p className="text-xs mt-2">No description available</p>
                         )}
                       </>
                     ) : (
