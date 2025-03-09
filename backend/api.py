@@ -21,6 +21,7 @@ from file_type_check import check_file_type
 from push_S3 import push_obj
 from convert_url import convert_url_to_temp_path
 from temp_save_file import save_file_temporarily
+import boto3
 
 
 api_bp = Blueprint('api', __name__)
@@ -241,6 +242,12 @@ def check_text():
 @api_bp.route("/check_image", methods=["POST"])
 def check_image():
     """Extract text from an image and process it."""
+    textract = boto3.client(
+        "textract",
+        aws_access_key_id=current_app.config['AWS_ACCESS_KEY'],
+        aws_secret_access_key=current_app.config['AWS_SECRET_KEY'],
+        region_name=current_app.config['AWS_REGION']
+    )
     try:
         logger = current_app.logger
         if "image" not in request.files:
@@ -250,7 +257,7 @@ def check_image():
         image_path = os.path.join(TEMP_FOLDER, image.filename)
         image.save(image_path)
 
-        extracted_text = extract_text_from_image(image_path)
+        extracted_text = extract_text_from_image(image_path,textract)
         os.remove(image_path)
         if not extracted_text.strip():
             return jsonify({"error": "No text extracted from image"}), 400
