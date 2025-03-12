@@ -11,7 +11,7 @@ export const navLinks = [
   },
   {
     id: 'myths',
-    name: 'Myths',
+    name: 'Fake News',
     href: '#work',
   },
 

@@ -79,7 +79,7 @@ const InDetect = ({ onBack }) => {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
-        timeout: 90000,
+        timeout: 120000,
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
           console.log(`Upload Progress: ${percentCompleted}%`);
@@ -87,7 +87,7 @@ const InDetect = ({ onBack }) => {
       });
       
       const apiResult = response.data;
-      console.log('API Response:', apiResult);
+      console.log('Full API Response:', apiResult);
       
       if (apiResult.error) {
         throw new Error(apiResult.error);
@@ -169,7 +169,7 @@ const InDetect = ({ onBack }) => {
   return (
     <section className="c-space my-10 pt-20">
       <div className="grid-container max-w-4xl mx-auto">
-        <h1 className="grid-headtext text-center mb-6">inDetect - Media Analysis Tool</h1>
+        <h1 className="grid-headtext text-center mb-6">inDetect - Deepfake Detection Tool</h1>
         <p className="grid-subtext text-center mb-8">
           Analyze images and videos to detect AI-generated content
         </p>
@@ -267,22 +267,31 @@ const InDetect = ({ onBack }) => {
               </div>
             )}
             
-            {result.s3_url && (
+            {result.s3_url ? (
               <div className="mb-6 text-center">
-                {result.name.toLowerCase().match(/\.(mp4|mov)$/i) ? (
-                  <video 
-                    src={result.s3_url} 
-                    controls 
-                    className="max-w-full max-h-96 mx-auto rounded-lg shadow-md" 
-                  />
-                ) : (
-                  <img 
-                    src={result.s3_url} 
-                    alt="Analyzed content" 
-                    className="max-w-full max-h-96 mx-auto rounded-lg shadow-md" 
-                  />
-                )}
-                <p className="text-sm text-gray-500 mt-2">Analyzed content</p>
+                <img 
+                  src={result.s3_url} 
+                  alt="Analysis result" 
+                  className="max-w-full max-h-96 mx-auto rounded-lg shadow-md"
+                  onError={(e) => {
+                    e.target.src = '/path/to/placeholder-image.png'; // Replace with actual placeholder path
+                    console.error('Image failed to load:', result.s3_url);
+                  }}
+                />
+                <p className="text-sm text-gray-500 mt-2">
+                  {result.name.toLowerCase().match(/\.(mp4|mov)$/i) 
+                    ? 'Result image extracted from video' 
+                    : 'Analyzed content'}
+                </p>
+              </div>
+            ) : (
+              <div className="mb-6 text-center">
+                <img 
+                  src="/path/to/placeholder-image.png" // Replace with actual placeholder path
+                  alt="No image available" 
+                  className="max-w-full max-h-96 mx-auto rounded-lg shadow-md"
+                />
+                <p className="text-sm text-gray-500 mt-2">No image available from analysis</p>
               </div>
             )}
             
