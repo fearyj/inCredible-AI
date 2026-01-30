@@ -54,4 +54,5 @@ backend/.pytest_cache/
 backend/.mypy_cache/
 
 # Cython and compiled files
-backend/*.so
+backend/*.sobackend/.env
+backend/*.env

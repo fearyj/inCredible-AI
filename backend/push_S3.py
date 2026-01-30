@@ -3,6 +3,10 @@ from botocore.exceptions import NoCredentialsError, ClientError
 
 def push_obj(object_path, object_name): 
     # AWS credentials (if not already set in environment variables)
+    aws_access_key = 'AWS_ACCESS_KEY_ID'
+    aws_secret_key = 'AWS_SECRET_ACCESS_KEY'
+    bucket_name = 'techfest2025'
+    region = 'ap-southeast-1'  # Replace with your region
       # Create an S3 client
     s3_client = boto3.client('s3', aws_access_key_id=aws_access_key,
                             aws_secret_access_key=aws_secret_key, region_name=region)

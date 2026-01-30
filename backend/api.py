@@ -158,6 +158,9 @@ def analyze():
                 is_deepfake = arya_api(upload_obj_url,ARYAAPI_KEY)  # Assumes boolean return
                 if not isinstance(is_deepfake, bool):
                     raise ValueError(f"arya_api returned an invalid value: {is_deepfake}")
+                #starts extracting frame, and edit, and push to S3
+                is_video = True if check_file_type(upload_obj_url) == 'Video' else False
+                public_url = deepfake_to_S3(file_path, is_video)
                 
                 response = {
                     "type": "file",
@@ -166,11 +169,8 @@ def analyze():
                     "message": "File received"
                 }
                 if is_deepfake: 
-                    is_video = True if check_file_type(upload_obj_url) == 'Video' else False
-
                     # file_path = convert_url_to_temp_path(upload_obj_url)
                     logger.info(f"The temporary file path is {file_path}")
-                    public_url = deepfake_to_S3(file_path, is_video)
                     response["s3_url"] = public_url
                     logger.info(f"Generated URL: " + public_url)
                 else: 
